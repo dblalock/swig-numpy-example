@@ -32,3 +32,5 @@ If you want to define stuff in a .c file, you *HAVE* to extern "C" the header or
 	  Referenced from: /Users/davis/Desktop/swig_scratch/pyWrapper/_example.so
 	  Expected in: dynamic lookup
 
+It's really weird about having both input and output arrays...you have to supply the size of the input (or maybe output?) array as an arg...
+
