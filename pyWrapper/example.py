@@ -13,20 +13,20 @@ if version_info >= (2,6,0):
         import imp
         fp = None
         try:
-            fp, pathname, description = imp.find_module('_inplace', [dirname(__file__)])
+            fp, pathname, description = imp.find_module('_example', [dirname(__file__)])
         except ImportError:
-            import _inplace
-            return _inplace
+            import _example
+            return _example
         if fp is not None:
             try:
-                _mod = imp.load_module('_inplace', fp, pathname, description)
+                _mod = imp.load_module('_example', fp, pathname, description)
             finally:
                 fp.close()
             return _mod
-    _inplace = swig_import_helper()
+    _example = swig_import_helper()
     del swig_import_helper
 else:
-    import _inplace
+    import _example
 del version_info
 try:
     _swig_property = property
@@ -69,8 +69,8 @@ except AttributeError:
 
 
 def inplace(*args):
-  return _inplace.inplace(*args)
-inplace = _inplace.inplace
+  return _example.inplace(*args)
+inplace = _example.inplace
 # This file is compatible with both classic and new-style classes.
 
 

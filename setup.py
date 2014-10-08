@@ -14,8 +14,8 @@ except AttributeError:
     numpy_include = numpy.get_numpy_include()
 
 # inplace extension module
-_inplace = Extension("_inplace",
-                   ["inplace.i","src/impl/inplace.cpp"],
+_example = Extension("_example",
+                   ["example.i","src/impl/basic_funcs.cpp"],
                    include_dirs = [numpy_include],
                    # language='c++',
                    swig_opts=['-c++'],
@@ -27,7 +27,7 @@ setup(  name        = "inplace function",
 
         author      = "Egor Zindy",
         version     = "1.0",
-        ext_modules = [_inplace]
+        ext_modules = [_example]
         )
 
 

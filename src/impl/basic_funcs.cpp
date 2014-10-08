@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../include/inplace.hpp"
+#include "../include/public_interface.hpp"
 
 void inplace(double *invec, int n)
 {
