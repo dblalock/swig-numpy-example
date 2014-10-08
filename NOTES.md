@@ -18,3 +18,17 @@ If its cpp files, you need to pass swig_opts=['-c++'] as a kwarg to the Extensio
 
  Note also that language='c++' wasn't necessary as a kwarg to the extension
 
+
+If you want to define stuff in a .c file, you *HAVE* to extern "C" the header or you'll get something like:
+
+	Traceback (most recent call last):
+	  File "test_example.py", line 4, in <module>
+	    import example
+	  File "/Users/davis/Desktop/swig_scratch/pyWrapper/example.py", line 26, in <module>
+	    _example = swig_import_helper()
+	  File "/Users/davis/Desktop/swig_scratch/pyWrapper/example.py", line 22, in swig_import_helper
+	    _mod = imp.load_module('_example', fp, pathname, description)
+	ImportError: dlopen(/Users/davis/Desktop/swig_scratch/pyWrapper/_example.so, 2): Symbol not found: __Z9util_funcv
+	  Referenced from: /Users/davis/Desktop/swig_scratch/pyWrapper/_example.so
+	  Expected in: dynamic lookup
+

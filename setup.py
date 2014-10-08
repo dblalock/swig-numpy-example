@@ -14,6 +14,7 @@ try:
 except AttributeError:
     numpy_include = numpy.get_numpy_include()
 
+# gather up all the source files
 srcFiles = ['example.i']
 includeDirs = [numpy_include]
 srcDir = os.path.abspath('src')
@@ -32,24 +33,20 @@ print(includeDirs)
 print("srcFiles:")
 print(srcFiles)
 
-# import sys
-# sys.exit()
-
 # inplace extension module
 _example = Extension("_example",
-                   # ["example.i","src/impl/basic_funcs.cpp", "src/utils/util.c"],
                    srcFiles,
                    include_dirs = includeDirs,
-                   # language='c++',
                    swig_opts=['-c++'],
+                   # language="c++",  # doesn't fix not finding <vector>
                    )
 
 # NumyTypemapTests setup
-setup(  name        = "inplace function",
-        description = "inplace takes a double array and doubles each of its elements in-place.",
-
-        author      = "Egor Zindy",
+setup(  name        = "SWIG Numpy Example",
+        description = "Example project to wrap a C/C++ library in Numpy",
+        author      = "D Blalock",
         version     = "1.0",
+        license     = "MIT",
         ext_modules = [_example]
         )
 
