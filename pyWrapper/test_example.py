@@ -111,8 +111,7 @@ arInstance = example.SimpleArrayClass()
 arInstance.setArray(a)
 
 ans = a.copy()
-output = arInstance.getArray(a.size)	# works before putting in default arg
-# output = arInstance.getArray()
+output = arInstance.getArray(a.size) # note that we have to give it the length
 assertEqual(ans, output)
 
 # ================================
@@ -125,8 +124,7 @@ a = np.array((0,1,2,3),'d')
 ans = scale * a
 
 user.setArray(a)
-# output = user.getArray(a.size)
-output = user.getArray(7)
+output = user.getArray(a.size)
 assertEqual(ans, output)
 
 
