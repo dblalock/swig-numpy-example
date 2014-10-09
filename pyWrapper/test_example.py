@@ -119,14 +119,13 @@ assertEqual(ans, output)
 # Test 10 - passing an array to a class and retrieving it
 # ================================
 
-# scale = 10;
-# user = example.ArrayUser_dbl(scale)
-# a = np.array((0,1,2,3),'d')
-# ans = scale * a
+scale = 10;
+user = example.ArrayUser_dbl(scale)
+a = np.array((0,1,2,3),'d')
+ans = scale * a
 
-# user.setArray(a)
-# output = user.getArray()
-# assertEqual(ans, output)
-
+user.setArray(a)
+output = user.getArray(a.size)
+assertEqual(ans, output)
 
 
