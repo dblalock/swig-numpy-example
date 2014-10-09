@@ -96,14 +96,37 @@ assertEqual(ans,output)
 assertEqual(1,1) 	# since we aren't actually running the above test
 
 # ================================
-# Test 8 - passing an array to a class and retrieving it
+# Test 8 - creating a simple class instance and communicating with it
 # ================================
 
 ans = 5;
 instance = example.SimpleClass(5)
 assertEqual(ans, instance.get_n())
 
-# user = example.ArrayUser_dbl()
+# ================================
+# Test 9 - creating a simple class that uses numpy arrays
+# ================================
+a = np.array((0,1,2,5),'d')
+arInstance = example.SimpleArrayClass()
+arInstance.setArray(a)
+
+ans = a.copy()
+output = arInstance.getArray(a.size)	# works before putting in default arg
+# output = arInstance.getArray()
+assertEqual(ans, output)
+
+# ================================
+# Test 10 - passing an array to a class and retrieving it
+# ================================
+
+# scale = 10;
+# user = example.ArrayUser_dbl(scale)
+# a = np.array((0,1,2,3),'d')
+# ans = scale * a
+
+# user.setArray(a)
+# output = user.getArray()
+# assertEqual(ans, output)
 
 
 

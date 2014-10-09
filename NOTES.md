@@ -34,3 +34,6 @@ If you want to define stuff in a .c file, you *HAVE* to extern "C" the header or
 
 It's really weird about having both input and output arrays...you have to supply the size of the input (or maybe output?) array as an arg...
 
+An importnat subtlety: ARGOUT_ARRAYs don't eat up the length parameter--they replace the T* with the numpy T array, but the "int len" part still needs to get passed in.
+	-if it looks easy, maybe figure out how to typemap this so that it eats up the length param
+	-Way easier approach: see if we can just pass in a default arg

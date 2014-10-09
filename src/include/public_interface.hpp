@@ -4,6 +4,8 @@
 
 #include <vector>
 
+// -------------------------------------------------------------- Functions
+
 /** Sanity check function to print out a string using printf */
 void printStuff();
 
@@ -24,20 +26,6 @@ void timesTwo(double* v, int len, double* outVec, int outLen);
 /** Add two arrays together and return an array */
 void addArrays(double* v1, int len1, double* v2, int len2, double* outVec, int len);
 
-/** A function that operates on a read-only array
- * @return The sum of the elements in the array */
-// int array_read_func(const double* ar, int len);
-
-/** A function that modifies an array in-place. Specifically, sets
- * each element to the cumulative sum of all elements so far, starting
- * at index 0. */
-// void array_modify_func(double* ar, int len);
-
-/** A templated function that operates on a read-only array
- * @return The sum of the elements in the array */
-// template <typename T>
-// T template_array_read_func(const T* ar, int len);
-
 // template <typename T>
 // void template_add_arrays(T* v1, int len1, T* v2, int len2, T* outVec, int len);
 template <typename T>
@@ -46,6 +34,8 @@ void template_add_arrays(T* v1, int len1, T* v2, int len2, T* outVec, int len) {
         outVec[i] = v1[i] + v2[i];
     }
 }
+
+// -------------------------------------------------------------- Classes
 
 class SimpleClass {
 private:
@@ -58,19 +48,80 @@ public:
 	}
 };
 
+class SimpleArrayClass {
+private:
+	std::vector<double> _array;
+public:
+	void setArray(double *v, int len) {
+		_array.assign(v, v+len);
+	}
+	void getArray(double *outVec, int len) {
+		for(unsigned i = 0; i < _array.size(); ++i) {
+			outVec[i] = _array[i];
+		}
+	}
+};
+
+
+// ------------------------------- More complicated stuff that doesn't quite work...
+
+
+template<typename T>
+class ArrayUser {
+private:
+	std::vector<T> _array;
+	T _scaleBy;
+public:
+	ArrayUser(T scaleBy);
+	virtual ~ArrayUser();
+	void setArray(T* ar, int len);
+	void getArray(T* outVec, int len);
+};
+
+template <typename T> ArrayUser<T>::ArrayUser(T scaleBy):
+	_scaleBy(scaleBy)
+{}
+
+template <typename T> ArrayUser<T>::~ArrayUser() {}
+
+template <typename T>
+void ArrayUser<T>::setArray(T* ar, int len) {
+	// _array.clear();
+	// for (int i = 0; i < len; i++) {
+	// 	_array.push_back(ar[i] * _scaleBy);		//results in undefined symbol for length error
+	// }
+	_array.assign(ar, ar+len);	// more efficient, but doesn't scaleBy
+	for(unsigned i = 0; i < _array.size(); ++i) {
+		_array[i] *= _scaleBy;
+	}
+}
+
+template <typename T>
+void ArrayUser<T>::getArray(T* outVec, int len) {
+	memcpy(outVec, &_array[0], sizeof(T)*len);
+}
+
 // forward declare template class
 // template <typename T> class ArrayUser;
 
 // declare type-specific class that uses it (via pimpl idiom)
-// class ArrayUser_dbl {
-// private:
-// 	ArrayUser<double> *_pimpl;
-// public:
-// 	ArrayUser_dbl(double scaleBy);
-// 	~ArrayUser_dbl();
-// 	void setArray(const double* ar, int len);
-// 	void getArray(double* outVec, int len);
-// };
+class ArrayUser_dbl {
+private:
+	ArrayUser<double> *_pimpl;
+public:
+	ArrayUser_dbl(double scaleBy):
+		_pimpl(new ArrayUser<double>(scaleBy)) 
+	{}
+	~ArrayUser_dbl() {
+		delete _pimpl;
+	}
+	void setArray(double* ar, int len) {
+		_pimpl->setArray(ar,len);
+	}
+	void getArray(double* outVec, int len) {
+		_pimpl->getArray(outVec,len);
+	}
+};
 
 
 #endif // PUBLIC_INTERFACE_HPP

@@ -15,6 +15,7 @@
 
 %apply (double* IN_ARRAY1, int DIM1) {(double* v, int len)};
 %apply (double* IN_ARRAY1, int DIM1) {(double* ar, int len)};
+%apply (const double* IN_ARRAY1, int DIM1) {(const double* ar, int len)};
 %apply (double* IN_ARRAY1, int DIM1) {(double* v, int inLen)};
 %apply (double* IN_ARRAY1, int DIM1) {(double* v1, int len1)};
 %apply (double* IN_ARRAY1, int DIM1) {(double* v2, int len2)};
