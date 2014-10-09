@@ -38,7 +38,6 @@ _example = Extension("_example",
                    srcFiles,
                    include_dirs = includeDirs,
                    swig_opts=['-c++'],
-                   # language="c++",  # doesn't fix not finding <vector>
                    )
 
 # NumyTypemapTests setup

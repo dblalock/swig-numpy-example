@@ -98,7 +98,10 @@ void ArrayUser<T>::setArray(T* ar, int len) {
 
 template <typename T>
 void ArrayUser<T>::getArray(T* outVec, int len) {
-	memcpy(outVec, &_array[0], sizeof(T)*len);
+	printf("getArray: len = %d\n", len);
+	size_t numel = len < _array.size() ? len : _array.size();
+	printf("getArray: numel = %d\n", numel);
+	memcpy(outVec, &_array[0], sizeof(T)*numel);
 }
 
 // forward declare template class

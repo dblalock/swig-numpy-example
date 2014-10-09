@@ -10,8 +10,8 @@ def passedTest():
 	print("Passed Test #%d" % testNum)
 
 def assertEqual(a,b):
-	assert np.array_equal(a, b)
 	print(a,b)
+	assert np.array_equal(a, b)
 	passedTest()
 
 def printVar(varName,var):
@@ -125,7 +125,8 @@ a = np.array((0,1,2,3),'d')
 ans = scale * a
 
 user.setArray(a)
-output = user.getArray(a.size)
+# output = user.getArray(a.size)
+output = user.getArray(7)
 assertEqual(ans, output)
 
 
