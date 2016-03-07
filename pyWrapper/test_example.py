@@ -9,12 +9,12 @@ def passedTest():
 	testNum += 1
 	print("Passed Test #%d" % testNum)
 
-def assertEqual(a,b):
+def assertEqual(a, b):
 	print(a,b)
 	assert np.array_equal(a, b)
 	passedTest()
 
-def printVar(varName,var):
+def printVar(varName, var):
 	print(varName)
 	print(var)
 
@@ -30,7 +30,7 @@ print("Passed Test #%d" % testNum)
 # ================================
 
 a = np.array((2,3,4),'d')
-ans = 2 * a.copy();
+ans = 2 * a.copy()
 example.inplace(a)
 
 assertEqual(a, ans)
@@ -64,7 +64,7 @@ passedTest()
 
 a = np.array((0,1,2,5),'d')
 ans = 2 * a
-output = example.timesTwo(a,a.size)	#works, but I have no idea why a can't be only arg
+output = example.timesTwo(a, a.size) # works, but I have no idea why a can't be only arg
 assertEqual(ans,output)
 
 # ================================
@@ -75,7 +75,7 @@ a = np.array((0,1,2,3),'d')
 b = np.array((10,11,12,13),'d')
 ans = np.array((10,12,14,16),'d')
 
-output = example.addArrays(a,b,a.size) #again, not sure why length is needed...
+output = example.addArrays(a, b, a.size) # again, not sure why length is needed...
 assertEqual(ans,output)
 
 
@@ -99,7 +99,7 @@ assertEqual(1,1) 	# since we aren't actually running the above test
 # Test 8 - creating a simple class instance and communicating with it
 # ================================
 
-ans = 5;
+ans = 5
 instance = example.SimpleClass(5)
 assertEqual(ans, instance.get_n())
 
@@ -118,7 +118,7 @@ assertEqual(ans, output)
 # Test 10 - passing an array to a class and retrieving it
 # ================================
 
-scale = 10;
+scale = 10
 user = example.ArrayUser_dbl(scale)
 a = np.array((0,1,2,3),'d')
 ans = scale * a
@@ -126,5 +126,17 @@ ans = scale * a
 user.setArray(a)
 output = user.getArray(a.size)
 assertEqual(ans, output)
+
+# ================================
+# Test 11 - receiving vector<int> as an int array
+# ================================
+
+print '------------------------'
+
+out = example.getIntVect()
+print "out = ", out
+assertEqual(np.arange(5, dtype=np.int), out)
+
+
 
 

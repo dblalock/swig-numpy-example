@@ -2,6 +2,8 @@
 
 %{
     #define SWIG_FILE_WITH_INIT
+    #include <vector>
+    #include <stdio.h> // TODO remove
     #include "src/include/public_interface.hpp"
 %}
 
@@ -9,6 +11,41 @@
 %init %{
     import_array();
 %}
+
+// namespace std {
+//	%template(LenVector) vector<length_t>;
+//	%template(IntVector) vector<int>;
+//	%template(DoubleVector) vector<double>;
+//	%template(NeighborVector) vector<Neighbor>;
+//}
+
+namespace std {
+	%typemap(out, fragment="NumPy_Fragments") vector<int> {
+		// prepare resulting array
+	 	// npy_intp dims[] = {$1->rows(), $1->cols()};
+	 	npy_intp sz = static_cast<npy_intp>($1.size());
+	 	npy_intp dims[] = {sz};
+	 	PyObject * out_array = PyArray_SimpleNew(1, dims, NPY_INT);
+
+		if (! out_array) {
+		    PyErr_SetString(PyExc_ValueError,
+		                    "vector<int>: unable to create the output array.");
+		    return NULL;
+		}
+
+		printf("calling std::vector<int> typemap\n");
+
+		// copy data from vect into numpy array
+		int* out_data = (int*) array_data(out_array);
+		for (size_t i = 0; i < sz; i++) {
+			// out_data[i] = (*$1)[i];
+			out_data[i] = static_cast<int>($1[i]);
+		}
+
+		$result = out_array;
+	}
+}
+
 
 // apply numpy typemaps based on arg types + names
 %apply (double* INPLACE_ARRAY1, int DIM1) {(double* inVec, int len)};

@@ -11,6 +11,8 @@
 #include <vector>
 #include <string.h>
 
+#include <stdio.h> // TODO remove
+
 #include "public_interface.hpp"
 
 // -------------------------------------------------------------- Functions
@@ -47,6 +49,16 @@ void addArrays(double* inVec1, int len1, double* inVec2, int len2, double* outVe
     for (int i=0; i< len; i++) {
         outVec[i] = inVec1[i] + inVec2[i];
     }
+}
+
+vector<int> getIntVect() {
+	vector<int> v {0, 1, 2, 3, 4};
+	printf("created vector: [");
+	for (auto el : v) {
+		printf("%d, ", el);
+	}
+	printf("]\n");
+	return v;
 }
 
 // -------------------------------------------------------------- Classes
@@ -92,7 +104,7 @@ void ArrayUser<T>::getArray(T* outVec, int len) {
 // ------------------------------- ArrayUser_dbl (wrapper class)
 
 ArrayUser_dbl::ArrayUser_dbl(double scaleBy):
-	_pimpl(new ArrayUser<double>(scaleBy)) 
+	_pimpl(new ArrayUser<double>(scaleBy))
 {}
 ArrayUser_dbl::~ArrayUser_dbl() {
 	delete _pimpl;
@@ -105,4 +117,4 @@ void ArrayUser_dbl::getArray(double* outVec, int len) {
 }
 
  #endif // ARRAYFUNCS_CPP
- 
+

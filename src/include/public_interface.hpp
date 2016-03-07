@@ -4,6 +4,8 @@
 
 #include <vector>
 
+using std::vector;
+
 // -------------------------------------------------------------- Functions
 
 /** Sanity check function to print out a string using printf */
@@ -25,13 +27,15 @@ void timesTwo(double* v, int len, double* outVec, int outLen);
 /** Add two arrays together and return an array */
 void addArrays(double* v1, int len1, double* v2, int len2, double* outVec, int len);
 
-// this doesn't really work; 
+// this doesn't really work;
 template <typename T>
 void template_add_arrays(T* v1, int len1, T* v2, int len2, T* outVec, int len) {
 	for (int i=0; i< len; i++) {
         outVec[i] = v1[i] + v2[i];
     }
 }
+
+vector<int> getIntVect();
 
 // -------------------------------------------------------------- Classes
 
