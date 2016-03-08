@@ -3,49 +3,70 @@
 %{
     #define SWIG_FILE_WITH_INIT
     #include <vector>
-    #include <stdio.h> // TODO remove
     #include "src/include/public_interface.hpp"
+    #include "src/include/public_interface_eigen.hpp"
 %}
 
 %include "numpy.i"
 %init %{
     import_array();
 %}
+%include <eigen.i>
 
-// namespace std {
-//	%template(LenVector) vector<length_t>;
-//	%template(IntVector) vector<int>;
-//	%template(DoubleVector) vector<double>;
-//	%template(NeighborVector) vector<Neighbor>;
-//}
+// ------------------------------------------------
+// vector typemaps
+// ------------------------------------------------
+
+%define %np_vector_typemaps(DTYPE, NPY_DPTYE)
 
 namespace std {
-	%typemap(out, fragment="NumPy_Fragments") vector<int> {
-		// prepare resulting array
-	 	// npy_intp dims[] = {$1->rows(), $1->cols()};
+	// hmm...apparently telling SWIG to try to optimize this breaks it
+	// %typemap(out, fragment="NumPy_Fragments", optimal="1") vector<DTYPE> {
+	%typemap(out, fragment="NumPy_Fragments") vector<DTYPE> {
+		// create python array of appropriate shape
 	 	npy_intp sz = static_cast<npy_intp>($1.size());
 	 	npy_intp dims[] = {sz};
-	 	PyObject * out_array = PyArray_SimpleNew(1, dims, NPY_INT);
+	 	PyObject* out_array = PyArray_SimpleNew(1, dims, NPY_DPTYE);
 
 		if (! out_array) {
 		    PyErr_SetString(PyExc_ValueError,
-		                    "vector<int>: unable to create the output array.");
+		                    "vector wrap: unable to create the output array.");
 		    return NULL;
 		}
 
-		printf("calling std::vector<int> typemap\n");
-
 		// copy data from vect into numpy array
-		int* out_data = (int*) array_data(out_array);
+		DTYPE* out_data = (DTYPE*) array_data(out_array);
 		for (size_t i = 0; i < sz; i++) {
-			// out_data[i] = (*$1)[i];
-			out_data[i] = static_cast<int>($1[i]);
+			out_data[i] = static_cast<DTYPE>($1[i]);
 		}
 
 		$result = out_array;
 	}
 }
 
+%enddef
+
+%np_vector_typemaps(int, NPY_INT)
+%np_vector_typemaps(long, NPY_LONG)
+%np_vector_typemaps(float, NPY_FLOAT)
+%np_vector_typemaps(double, NPY_DOUBLE)
+// %np_vector_typemaps(SimpleStruct*, NPY_OBJECT) // breaks
+
+// ------------------------------------------------
+// eigen typemaps
+// ------------------------------------------------
+
+%eigen_typemaps(MatrixXd)
+%eigen_typemaps(VectorXd)
+// %eigen_typemaps(ArrayXd)
+%eigen_typemaps(MatrixXf)
+%eigen_typemaps(VectorXf)
+%eigen_typemaps(MatrixXi)
+%eigen_typemaps(VectorXi)
+
+// ------------------------------------------------
+// raw c array typemaps
+// ------------------------------------------------
 
 // apply numpy typemaps based on arg types + names
 %apply (double* INPLACE_ARRAY1, int DIM1) {(double* inVec, int len)};
@@ -64,6 +85,7 @@ namespace std {
 // %apply (int DIM1, double* ARGOUT_ARRAY1) {(int len, double* outVec)};
 
 %include "src/include/public_interface.hpp"
+%include "src/include/public_interface_eigen.hpp"
 
 // instantiate templates; note that these must be *after* the appropriate %include
 // NOTE: this doesn't seem to work with our custom "apply"s above, so I don't think

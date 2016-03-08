@@ -11,8 +11,6 @@
 #include <vector>
 #include <string.h>
 
-#include <stdio.h> // TODO remove
-
 #include "public_interface.hpp"
 
 // -------------------------------------------------------------- Functions
@@ -53,11 +51,26 @@ void addArrays(double* inVec1, int len1, double* inVec2, int len2, double* outVe
 
 vector<int> getIntVect() {
 	vector<int> v {0, 1, 2, 3, 4};
-	printf("created vector: [");
-	for (auto el : v) {
-		printf("%d, ", el);
+	return v;
+}
+vector<long> getLongVect() {
+	vector<long> v {0, 1, 2, 3, 4};
+	return v;
+}
+vector<float> getFloatVect() {
+	vector<float> v {0, 1, 2, 3, 4};
+	return v;
+}
+vector<double> getDoubleVect() {
+	vector<double> v {0, 1, 2, 3, 4};
+	return v;
+}
+
+vector<SimpleStruct*> getObjectVect() {
+	vector<SimpleStruct*> v;
+	for (int i = 0; i < 5; i++) {
+		v[i] = new SimpleStruct{ .x = (double)i, .y = i};
 	}
-	printf("]\n");
 	return v;
 }
 

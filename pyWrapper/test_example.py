@@ -18,6 +18,8 @@ def printVar(varName, var):
 	print(varName)
 	print(var)
 
+# TODO separate test funcs instead of all code at top level
+
 # ================================
 # Test 1 - calling cpp successfully
 # ================================
@@ -45,21 +47,21 @@ output = example.range(4,3)
 assertEqual(ans, output)
 
 # ================================
-# Test 5 - taking in two arrays and returning an array
+# Test 4 - taking in two arrays and returning an array
 # ================================
 
 a = np.array((0,1,2,3),'d')
 b = np.array((10,11,12,13),'d')
 ans = np.sum(a) + np.sum(b)
 output = example.sumOfArrays(a,b)
-# assertEqual(ans,output)
+assertEqual(ans,output)
 printVar("output",output)
 printVar("ans",ans)
 assert output == ans
 passedTest()
 
 # ================================
-# Test 5 - taking in an array and returning an array
+# Test 6 - taking in an array and returning an array
 # ================================
 
 a = np.array((0,1,2,5),'d')
@@ -68,7 +70,7 @@ output = example.timesTwo(a, a.size) # works, but I have no idea why a can't be 
 assertEqual(ans,output)
 
 # ================================
-# Test 6 - taking in two arrays and returning an array
+# Test 7 - taking in two arrays and returning an array
 # ================================
 
 a = np.array((0,1,2,3),'d')
@@ -80,7 +82,7 @@ assertEqual(ans,output)
 
 
 # ================================
-# Test 7 - taking in two arrays and returning an array, with templates
+# Test 8 - taking in two arrays and returning an array, with templates
 # ================================
 
 # NOTE: This basically just doesn't work. The moral is to not try to wrap
@@ -96,7 +98,7 @@ assertEqual(ans,output)
 assertEqual(1,1) 	# since we aren't actually running the above test
 
 # ================================
-# Test 8 - creating a simple class instance and communicating with it
+# Test 9 - creating a simple class instance and communicating with it
 # ================================
 
 ans = 5
@@ -104,7 +106,7 @@ instance = example.SimpleClass(5)
 assertEqual(ans, instance.get_n())
 
 # ================================
-# Test 9 - creating a simple class that uses numpy arrays
+# Test 10 - creating a simple class that uses numpy arrays
 # ================================
 a = np.array((0,1,2,5),'d')
 arInstance = example.SimpleArrayClass()
@@ -115,7 +117,7 @@ output = arInstance.getArray(a.size) # note that we have to give it the length
 assertEqual(ans, output)
 
 # ================================
-# Test 10 - passing an array to a class and retrieving it
+# Test 11 - passing an array to a class and retrieving it
 # ================================
 
 scale = 10
@@ -128,15 +130,61 @@ output = user.getArray(a.size)
 assertEqual(ans, output)
 
 # ================================
-# Test 11 - receiving vector<int> as an int array
+# Tests 12-15 - receiving vectors as numpy arrays
 # ================================
 
 print '------------------------'
 
 out = example.getIntVect()
-print "out = ", out
 assertEqual(np.arange(5, dtype=np.int), out)
 
+out = example.getLongVect()
+assertEqual(np.arange(5, dtype=np.long), out)
 
+out = example.getFloatVect()
+assertEqual(np.arange(5, dtype=np.float), out)
 
+out = example.getDoubleVect()
+assertEqual(np.arange(5, dtype=np.double), out)
+
+# TODO get returning vectors of objects to work
+# out = example.getObjectVect()
+# nObjs = 5
+# ans = np.empty(nObjs, dtype=np.object)
+# for i in range(nObjs):
+# 	ans[i] = example.SimpleStruct(i, i)
+# assertEqual(ans, out)
+
+# ================================
+# Tests 16-21 - receiving eigen matrices as numpy arrays
+# ================================
+
+# ------------------------ doubles
+A = np.arange(12).reshape(4, 3)
+v = np.arange(4)
+
+M_out = example.createEigenMat()
+v_out = example.createEigenVect()
+# A_out = example.createEigenArray()
+
+assertEqual(A, M_out)
+assertEqual(v, v_out)
+# assertEqual(A, A_out) # TODO typemaps for arrays
+
+# ------------------------ floats
+M_out = example.createEigenMatf()
+v_out = example.createEigenVectf()
+
+assertEqual(A, M_out)
+assertEqual(v, v_out)
+
+# ------------------------ ints
+A = A.astype(np.int)
+v = v.astype(np.int)
+
+M_out = example.createEigenMati()
+v_out = example.createEigenVecti()
+
+assertEqual(A, M_out)
+assertEqual(v, v_out)
 

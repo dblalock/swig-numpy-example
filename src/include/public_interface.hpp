@@ -6,6 +6,13 @@
 
 using std::vector;
 
+// -------------------------------------------------------------- Structs
+
+typedef struct SimpleStruct {
+	double x;
+	int y;
+} SimpleStruct;
+
 // -------------------------------------------------------------- Functions
 
 /** Sanity check function to print out a string using printf */
@@ -36,8 +43,13 @@ void template_add_arrays(T* v1, int len1, T* v2, int len2, T* outVec, int len) {
 }
 
 vector<int> getIntVect();
+vector<long> getLongVect();
+vector<float> getFloatVect();
+vector<double> getDoubleVect();
+vector<SimpleStruct*> getObjectVect(); // TODO doesn't work with SWIG
 
 // -------------------------------------------------------------- Classes
+
 
 class SimpleClass {
 private:
