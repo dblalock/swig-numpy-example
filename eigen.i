@@ -33,6 +33,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* Additional credit to Martin Felis:
+ * https://bitbucket.org/MartinFelis/eigen3swig/src
+ *
+ * Plus some minor modifications of my own (Davis Blalock, 2016-3-7)
+ */
+
 %{
   #define SWIG_FILE_WITH_INIT
   #include "Eigen/Core"
