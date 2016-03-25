@@ -36,7 +36,9 @@
 /* Additional credit to Martin Felis:
  * https://bitbucket.org/MartinFelis/eigen3swig/src
  *
- * Plus some minor modifications of my own (Davis Blalock, 2016-3-7)
+ * Plus some modifications of my own (Davis Blalock, 2016-3-7);
+ * in particular, I've modified this to work with both Eigen matrices
+ * and arrays.
  */
 
 %{
@@ -56,7 +58,7 @@
   template <typename T> int NumPyType() {return -1;};
 
   template <class Derived>
-  void ConvertFromNumpyToEigenMatrix(Eigen::MatrixBase<Derived>* out, PyObject* in)
+  void ConvertFromNumpyToEigen(Eigen::DenseBase<Derived>* out, PyObject* in)
   {
     int rows = 0;
     int cols = 0;
@@ -125,7 +127,7 @@
 
   // Copies values from Eigen type into an existing NumPy type
   template <class Derived>
-  void CopyFromEigenToNumPyMatrix(PyObject* out, Eigen::MatrixBase<Derived>* in)
+  void CopyFromEigenToNumPy(PyObject* out, Eigen::DenseBase<Derived>* in)
   {
     int rows = 0;
     int cols = 0;
@@ -193,7 +195,7 @@
   };
 
   template <class Derived>
-  void ConvertFromEigenToNumPyMatrix(PyObject** out, Eigen::MatrixBase<Derived>* in)
+  void ConvertFromEigenToNumPy(PyObject** out, Eigen::DenseBase<Derived>* in)
   {
     // vector (1D)
     if (in->cols() == 1) {
@@ -233,27 +235,27 @@
 %typemap(argout, fragment="Eigen_Fragments") CLASS &
 {
   // Argout: &
-  CopyFromEigenToNumPyMatrix<CLASS>($input, $1);
+  CopyFromEigenToNumPy<CLASS>($input, $1);
 }
 
 // In: (nothing: no constness)
 %typemap(in, fragment="Eigen_Fragments") CLASS (CLASS temp)
 {
-  ConvertFromNumpyToEigenMatrix<CLASS>(&temp, $input);
+  ConvertFromNumpyToEigen<CLASS>(&temp, $input);
   $1 = temp;
 }
 // In: const&
 %typemap(in, fragment="Eigen_Fragments") CLASS const& (CLASS temp)
 {
   // In: const&
-  ConvertFromNumpyToEigenMatrix<CLASS>(&temp, $input);
+  ConvertFromNumpyToEigen<CLASS>(&temp, $input);
   $1 = &temp;
 }
 // In: & (not yet implemented)
 %typemap(in, fragment="Eigen_Fragments") CLASS & (CLASS temp)
 {
   // In: non-const&
-  ConvertFromNumpyToEigenMatrix<CLASS>(&temp, $input);
+  ConvertFromNumpyToEigen<CLASS>(&temp, $input);
 
   $1 = &temp;
 }
@@ -271,17 +273,17 @@
 // Out: (nothing: no constness)
 %typemap(out, fragment="Eigen_Fragments") CLASS
 {
-  ConvertFromEigenToNumPyMatrix<CLASS>(&$result, &$1);
+  ConvertFromEigenToNumPy<CLASS>(&$result, &$1);
 }
 // Out: const
 %typemap(out, fragment="Eigen_Fragments") CLASS const
 {
-  ConvertFromEigenToNumPyMatrix<CLASS>(&$result, &$1);
+  ConvertFromEigenToNumPy<CLASS>(&$result, &$1);
 }
 // Out: const&
 %typemap(out, fragment="Eigen_Fragments") CLASS const&
 {
-  ConvertFromEigenToNumPyMatrix<CLASS>(&$result, $1);
+  ConvertFromEigenToNumPy<CLASS>(&$result, $1);
 }
 // Out: & (not yet implemented)
 %typemap(out, fragment="Eigen_Fragments") CLASS &

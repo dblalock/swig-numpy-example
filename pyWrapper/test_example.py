@@ -165,18 +165,24 @@ v = np.arange(4)
 
 M_out = example.createEigenMat()
 v_out = example.createEigenVect()
-# A_out = example.createEigenArray()
+A_out = example.createEigenArray()
+u_out = example.createEigenArrayVect()
 
 assertEqual(A, M_out)
 assertEqual(v, v_out)
-# assertEqual(A, A_out) # TODO typemaps for arrays
+assertEqual(A, A_out)
+assertEqual(v, u_out)
 
 # ------------------------ floats
 M_out = example.createEigenMatf()
 v_out = example.createEigenVectf()
+A_out = example.createEigenArrayf()
+u_out = example.createEigenArrayVectf()
 
 assertEqual(A, M_out)
 assertEqual(v, v_out)
+assertEqual(A, A_out)
+assertEqual(v, u_out)
 
 # ------------------------ ints
 A = A.astype(np.int)
@@ -184,7 +190,11 @@ v = v.astype(np.int)
 
 M_out = example.createEigenMati()
 v_out = example.createEigenVecti()
+A_out = example.createEigenArrayi()
+u_out = example.createEigenArrayVecti()
 
 assertEqual(A, M_out)
 assertEqual(v, v_out)
+assertEqual(A, A_out)
+assertEqual(v, u_out)
 
